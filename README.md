@@ -1,13 +1,13 @@
-# Siuji — Rilis Binary
+# Siuji — Rilis
 
 Repo ini **cuma berisi binary hasil build** (server API + frontend yang sudah
-di-embed) untuk didistribusikan ke sekolah yang pakai Siuji — bukan source
-code (source code tetap privat di repo lain). Isinya dipakai juga oleh fitur
+di-embed) untuk didistribusikan siap pakai bagi sekolah/madrasah atau yang lainnya yang ingin menggunakan aplikasi ujian Online Siuji — bukan source
+code. Isinya dipakai juga oleh fitur
 cek/auto-update di panel admin Siuji (`Pengaturan > Peralatan > Ujian Aman`),
 lewat file `manifest.json` di root repo ini.
 
-Tidak ada lisensi open-source di repo ini — semua hak cipta tetap milik
-Nifadigital. Publik cuma supaya file bisa diunduh langsung tanpa login.
+hak cipta tetap milik
+Nifadigital.
 
 ## Struktur folder
 

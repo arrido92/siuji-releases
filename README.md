@@ -1,9 +1,7 @@
 # Siuji — Rilis
 
-Repo ini **cuma berisi binary hasil build** (server API + frontend yang sudah
-di-embed) untuk didistribusikan siap pakai bagi sekolah/madrasah atau yang lainnya yang ingin menggunakan aplikasi ujian Online Siuji — bukan source
-code. Isinya dipakai juga oleh fitur
-cek/auto-update di panel admin Siuji (`Pengaturan > Peralatan > Ujian Aman`),
+Aplikasi Ujian Oline (Siuji) Boleh digunakan dan dipakai untuk kepenting pendidikan di indonesia. Aplikasi ini sudah siap pakai bagi sekolah/madrasah atau yang lainnya yang ingin menggunakan aplikasi ujian Online Siuji. 
+Isinya dipakai juga oleh fitur cek/auto-update di panel admin Siuji (`Pengaturan > Peralatan > Ujian Aman`),
 lewat file `manifest.json` di root repo ini.
 
 hak cipta tetap milik

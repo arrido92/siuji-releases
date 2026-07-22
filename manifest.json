@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "release_notes": "Rilis pertama Siuji yang dilacak sistem cek/auto-update: banner startup, auto-scan port kosong saat instalasi pertama, pendaftaran systemd otomatis (Linux + root), auto-update lewat panel admin (Linux + systemd), dan syarat versi minimal client (Android/Desktop).",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"

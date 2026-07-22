@@ -25,7 +25,7 @@ itu TIDAK ikut terbawa (keterbatasan HTTP polos, bukan bug). Makanya langkah
 ## Instalasi di Windows
 
 **1. Install PostgreSQL** (kalau belum ada)
-- Unduh installer resmi: https://www.postgresql.org/download/windows/
+- Unduh installer resmi: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 - Saat instalasi, **catat password user `postgres`** yang Anda buat — dibutuhkan lagi di langkah wizard nanti.
 - Biarkan port default `5432`.
 

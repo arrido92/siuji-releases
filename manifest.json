@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "release_notes": "Rilis pertama Siuji yang dilacak sistem cek/auto-update: banner startup, auto-scan port kosong saat instalasi pertama, pendaftaran systemd otomatis (Linux + root), auto-update lewat panel admin (Linux + systemd), dan syarat versi minimal client (Android/Desktop).",
+  "version": "1.1.0",
+  "release_notes": "Perbaikan lisensi berlangganan: status kini dicek ulang tiap saat (bukan cuma saat startup/upload) supaya otomatis turun ke free tier saat kedaluwarsa tanpa restart server. Tambah dukungan kunci lisensi ke Nama Sekolah/NPSN tertentu. Binary sekarang di-obfuscate (garble) untuk menaikkan ketahanan terhadap reverse engineering.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

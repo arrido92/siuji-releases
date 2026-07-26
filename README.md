@@ -1,11 +1,16 @@
 # Siuji — Rilis
 
-Aplikasi Ujian Oline (Siuji) Boleh digunakan dan dipakai untuk kepenting pendidikan di indonesia. Aplikasi ini sudah siap pakai bagi sekolah/madrasah atau yang lainnya yang ingin menggunakan aplikasi ujian Online Siuji. 
+Aplikasi Ujian Online (Siuji) — boleh digunakan untuk kepentingan pendidikan di Indonesia. Aplikasi ini sudah siap pakai bagi sekolah/madrasah atau lembaga lain yang ingin menggunakan aplikasi ujian online Siuji.
 Isinya dipakai juga oleh fitur cek/auto-update di panel admin Siuji (`Pengaturan > Peralatan > Ujian Aman`),
 lewat file `manifest.json` di root repo ini.
 
-hak cipta tetap milik
-Nifadigital.
+Hak cipta tetap milik Nifadigital.
+
+## Aplikasi Siswa (Android)
+
+[![Download di Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/id_badge_web_generic.png)](https://play.google.com/store/apps/details?id=id.siuji.studentclient)
+
+> **Segera hadir** — aplikasi masih dalam proses review Google Play. Tombol di atas akan otomatis aktif begitu publikasi disetujui.
 
 ## Struktur folder
 

@@ -16,11 +16,12 @@ Hak cipta tetap milik Nifadigital.
 
 Aplikasi desktop khusus Windows untuk mengunci pengerjaan ujian ke jendela resmi Siuji (alternatif/pendamping Safe Exam Browser), dipakai kalau fitur premium **Ujian Aman** diaktifkan sekolah.
 
-**[⬇️ Unduh `Siuji.Desktop.Installer.msi`](desktop/Siuji.Desktop.Installer.msi)**
+**[⬇️ Unduh `Siuji.Desktop.Installer.msi`](https://update-siuji.nifaniaga.com/Siuji.Desktop.Installer.msi)**
 
 - Jalankan file `.msi` yang diunduh, ikuti wizard instalasi (Welcome → Lisensi → Selesai).
 - Setelah terpasang, buka aplikasi dari Start Menu/Desktop shortcut — aplikasi akan minta **alamat server** (URL Siuji sekolah) saat pertama kali dijalankan.
 - Konfigurasi tersimpan di `%APPDATA%\id.siuji.desktop` — tidak ikut terhapus saat update ke versi baru (cuma hilang kalau aplikasi benar-benar di-uninstall).
+- File ini di-hosting terpisah (Cloudflare R2), bukan di repo ini — link selalu mengarah ke versi terbaru, tidak perlu diganti tiap rilis.
 
 ## Struktur folder
 
@@ -28,8 +29,9 @@ Aplikasi desktop khusus Windows untuk mengunci pengerjaan ujian ke jendela resmi
 windows/      siuji.exe + .env.example   -> Windows (Server/Desktop)
 linux/        siuji + .env.example       -> Linux umum (Ubuntu/Debian, VPS polos)
 vps-aapanel/  siuji + .env.example       -> Linux yang dikelola lewat panel aaPanel
-desktop/      Siuji.Desktop.Installer.msi -> Aplikasi Desktop Windows (Ujian Aman)
 ```
+
+(Aplikasi Desktop Windows di-hosting terpisah di Cloudflare R2 — lihat tautan unduh di atas, bukan di folder repo ini.)
 
 `linux/siuji` dan `vps-aapanel/siuji` sudah ditandai executable di git (mode
 755) — tapi **kalau diunduh lewat `wget`/`curl`** (bukan `git clone`), tanda

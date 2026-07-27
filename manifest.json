@@ -1,6 +1,6 @@
 {
-  "version": "1.1.1",
-  "release_notes": "Perbaikan UX: notifikasi \"Sesi Anda telah berakhir\" sebelumnya salah muncul setelah logout manual atau saat me-refresh halaman login yang memang belum ada sesi -- sekarang hanya tampil kalau sesi yang tadinya benar-benar aktif mati mendadak.",
+  "version": "1.2.0",
+  "release_notes": "Tambah integrasi modul e-learning Siuji Belajar (menu baru muncul otomatis kalau lisensi sekolah sudah mengaktifkan fitur ini, redirect SSO ke instalasi Siuji Belajar terpisah). Paket distribusi VPS/aaPanel yang duplikat dihapus -- pakai paket Linux biasa. Perbaikan UX: notifikasi \"Sesi Anda telah berakhir\" sebelumnya salah muncul setelah logout manual atau saat me-refresh halaman login yang memang belum ada sesi -- sekarang hanya tampil kalau sesi yang tadinya benar-benar aktif mati mendadak.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

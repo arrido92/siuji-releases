@@ -1,6 +1,6 @@
 {
-  "version": "1.2.0",
-  "release_notes": "Tambah integrasi modul e-learning Siuji Belajar (menu baru muncul otomatis kalau lisensi sekolah sudah mengaktifkan fitur ini, redirect SSO ke instalasi Siuji Belajar terpisah). Paket distribusi VPS/aaPanel yang duplikat dihapus -- pakai paket Linux biasa. Perbaikan UX: notifikasi \"Sesi Anda telah berakhir\" sebelumnya salah muncul setelah logout manual atau saat me-refresh halaman login yang memang belum ada sesi -- sekarang hanya tampil kalau sesi yang tadinya benar-benar aktif mati mendadak. Perbaikan kecil: label versi di footer sempat tampil dobel (\"v.v1.2.0\"), sekarang benar (\"v1.2.0\"), dan nama aplikasi jadi SIUJI CBT.",
+  "version": "1.2.1",
+  "release_notes": "Perbaikan penting: login/CSRF/submit ujian sebelumnya bisa gagal (\"csrf token tidak valid atau hilang\", sesi terlihat putus) di deployment yang diakses lewat HTTP polos tanpa domain+HTTPS -- termasuk siuji.exe yang dijalankan langsung di jaringan LAN sekolah (sesuai panduan instalasi Windows/Linux), maupun akses lewat alamat IP lokal. Cookie sesi sekarang otomatis menyesuaikan ke koneksi yang sebenarnya dipakai, bukan berdasar mode aplikasi semata -- terverifikasi lewat pengujian otomatis end-to-end (login, kerjakan soal, submit ujian) yang berhasil penuh di kondisi ini.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

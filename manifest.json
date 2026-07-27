@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "release_notes": "Perbaikan lisensi berlangganan: status kini dicek ulang tiap saat (bukan cuma saat startup/upload) supaya otomatis turun ke free tier saat kedaluwarsa tanpa restart server. Tambah dukungan kunci lisensi ke Nama Sekolah/NPSN tertentu. Binary sekarang di-obfuscate (garble) untuk menaikkan ketahanan terhadap reverse engineering.",
+  "version": "1.1.1",
+  "release_notes": "Perbaikan UX: notifikasi \"Sesi Anda telah berakhir\" sebelumnya salah muncul setelah logout manual atau saat me-refresh halaman login yang memang belum ada sesi -- sekarang hanya tampil kalau sesi yang tadinya benar-benar aktif mati mendadak.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

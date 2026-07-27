@@ -27,16 +27,15 @@ Aplikasi desktop khusus Windows untuk mengunci pengerjaan ujian ke jendela resmi
 
 ```
 windows/      siuji.exe + .env.example   -> Windows (Server/Desktop)
-linux/        siuji + .env.example       -> Linux umum (Ubuntu/Debian, VPS polos)
-vps-aapanel/  siuji + .env.example       -> Linux yang dikelola lewat panel aaPanel
+linux/        siuji + .env.example       -> Linux (Ubuntu/Debian, VPS polos, MAUPUN VPS yang dikelola aaPanel -- binary-nya sama, lihat catatan aaPanel di bawah)
 ```
 
 (Aplikasi Desktop Windows di-hosting terpisah di Cloudflare R2 — lihat tautan unduh di atas, bukan di folder repo ini.)
 
-`linux/siuji` dan `vps-aapanel/siuji` sudah ditandai executable di git (mode
-755) — tapi **kalau diunduh lewat `wget`/`curl`** (bukan `git clone`), tanda
-itu TIDAK ikut terbawa (keterbatasan HTTP polos, bukan bug). Makanya langkah
-`chmod +x siuji` di bawah tetap WAJIB dijalankan, jangan dilewati.
+`linux/siuji` sudah ditandai executable di git (mode 755) — tapi **kalau
+diunduh lewat `wget`/`curl`** (bukan `git clone`), tanda itu TIDAK ikut
+terbawa (keterbatasan HTTP polos, bukan bug). Makanya langkah `chmod +x siuji`
+di bawah tetap WAJIB dijalankan, jangan dilewati.
 
 ---
 
@@ -115,8 +114,7 @@ sudo systemctl restart siuji     # restart manual kalau perlu
 
 ## Instalasi di VPS dengan aaPanel
 
-Sama persis seperti Linux polos di atas, cuma:
-- Unduh binary dari folder [`vps-aapanel/`](vps-aapanel/) sebagai gantinya (`wget https://raw.githubusercontent.com/arrido92/siuji-releases/main/vps-aapanel/siuji`).
+Sama persis seperti Linux polos di atas — **unduh binary dan `.env.example` dari folder [`linux/`](linux/) yang sama** (tidak ada paket terpisah untuk aaPanel, binary-nya identik), cuma:
 - PostgreSQL boleh dipasang lewat App Store aaPanel (menu "PostgreSQL Manager") alih-alih `apt install` manual — user/password diatur dari situ.
 - Buka port lewat menu **Security** aaPanel (bukan `ufw` manual), kalau firewall aaPanel aktif.
 - Jalankan `sudo ./siuji` tetap lewat SSH terminal (fitur "Process Daemon"/"Supervisor Manager" bawaan aaPanel BOLEH dipakai sebagai alternatif kalau tidak mau andalkan pendaftaran systemd otomatis di atas — pilih salah satu, jangan dua-duanya sekaligus supaya tidak rebutan port).

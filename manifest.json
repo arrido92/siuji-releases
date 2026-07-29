@@ -1,6 +1,6 @@
 {
-  "version": "1.2.1",
-  "release_notes": "Perbaikan penting: login/CSRF/submit ujian sebelumnya bisa gagal (\"csrf token tidak valid atau hilang\", sesi terlihat putus) di deployment yang diakses lewat HTTP polos tanpa domain+HTTPS -- termasuk siuji.exe yang dijalankan langsung di jaringan LAN sekolah (sesuai panduan instalasi Windows/Linux), maupun akses lewat alamat IP lokal. Cookie sesi sekarang otomatis menyesuaikan ke koneksi yang sebenarnya dipakai, bukan berdasar mode aplikasi semata -- terverifikasi lewat pengujian otomatis end-to-end (login, kerjakan soal, submit ujian) yang berhasil penuh di kondisi ini.",
+  "version": "1.2.2",
+  "release_notes": "Perbaikan UX Data Siswa: info \"Total siswa\" & jumlah baris tabel, filter ukuran halaman (20/50/100 per halaman) yang sebelumnya tidak berfungsi di seluruh aplikasi kini bisa dipakai. Format nama rombel dirapikan jadi \"7-A\" (sebelumnya \"7A\") di seluruh halaman. Perbaikan: soal yang sudah ditarik dari Bank Soal ke suatu ujian sekarang dicegah tertarik dua kali (checkbox otomatis nonaktif + penanda \"Sudah ditambahkan\"), termasuk untuk pengambilan soal acak. Perbaikan: tombol \"Duplikat\" pada Ujian sebelumnya selalu gagal dengan pesan error server -- sekarang berfungsi normal.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

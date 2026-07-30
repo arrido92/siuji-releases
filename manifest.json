@@ -1,6 +1,6 @@
 {
-  "version": "1.2.3",
-  "release_notes": "Tambah badge notifikasi update di topbar admin (pil biru \"Update tersedia: vX.Y.Z\", klik langsung ke Pengaturan > Tentang Aplikasi) -- sebelumnya admin harus cek manual ke Pengaturan dulu baru tahu ada versi baru. Perbaikan: setelah klik \"Update Sekarang\", aplikasi sekarang otomatis memberi tahu status \"Memperbarui server...\" lalu \"Berhasil! Sekarang menjalankan vX.Y.Z\" begitu server hidup kembali -- sebelumnya harus hard refresh manual untuk tahu update sudah selesai atau belum.",
+  "version": "1.2.4",
+  "release_notes": "Perbaikan penting: auto-update lewat panel admin sebelumnya bisa gagal total (\"Request failed with status code 524\", binary di server tidak jadi berubah) kalau koneksi server ke GitHub agak lambat dan situs diakses lewat reverse proxy/CDN seperti Cloudflare -- proses unduh binary baru kini berjalan di background, terpisah dari koneksi browser, sehingga tidak lagi ikut gagal kalau proxy di depan menyerah menunggu lebih dulu.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

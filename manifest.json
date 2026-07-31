@@ -1,6 +1,6 @@
 {
-  "version": "1.2.4",
-  "release_notes": "Perbaikan penting: auto-update lewat panel admin sebelumnya bisa gagal total (\"Request failed with status code 524\", binary di server tidak jadi berubah) kalau koneksi server ke GitHub agak lambat dan situs diakses lewat reverse proxy/CDN seperti Cloudflare -- proses unduh binary baru kini berjalan di background, terpisah dari koneksi browser, sehingga tidak lagi ikut gagal kalau proxy di depan menyerah menunggu lebih dulu.",
+  "version": "1.2.5",
+  "release_notes": "Fitur baru: Pengawasan Webcam untuk Ujian Aman -- ambil foto webcam berkala selama siswa mengerjakan ujian, tersimpan langsung ke bucket S3/Cloudflare R2 milik sekolah sendiri (bukan server Siuji). Kamera diminta sekali (di halaman login atau setelah login, sesuai pengaturan), tampil sebagai preview kecil yang persisten, dan tidak pernah memicu popup izin di tengah ujian yang sedang berjalan. Guru/admin bisa meninjau foto lewat panel Monitoring Ujian. Dukungan Safe Exam Browser untuk webcam turut diperbaiki (config .seb sekarang membuka izin video capture). Modul Siuji Belajar (menu & sinkronisasi roster) dihapus total dari CBT -- sekarang produk yang sepenuhnya berdiri sendiri.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

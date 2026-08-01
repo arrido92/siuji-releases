@@ -6,6 +6,31 @@ lewat file `manifest.json` di root repo ini.
 
 Hak cipta tetap milik Nifadigital.
 
+## Fitur
+
+**Inti (gratis, tanpa lisensi tambahan)**
+- Ujian online (CBT) dengan 7 tipe soal: pilihan ganda, pilihan ganda kompleks (jawaban benar >1), benar/salah, isian singkat, esai, urutkan, dan menjodohkan — sebagian besar dinilai otomatis, esai dinilai manual oleh guru.
+- Bank Soal per mata pelajaran — soal ujian tinggal "Ambil dari Bank Soal", atau duplikat dari ujian yang sudah ada.
+- Manajemen data sekolah: siswa, staf/guru, kelas (rombel), tahun ajaran, kenaikan kelas, pindah kelas, data alumni, riwayat siswa.
+- Penjadwalan ujian, pendaftaran peserta (enrollment), dan penjadwalan ujian ulang.
+- Cek Kesiapan Ujian sebelum ujian dimulai (validasi jadwal, peserta, dan soal).
+- Monitoring Ujian Live untuk guru/pengawas, plus layar Monitoring Publik tanpa login (cocok ditampilkan di smart board/proyektor sekolah).
+- Deteksi pelanggaran otomatis selama ujian (pindah tab/aplikasi, keluar layar penuh), dengan penguncian akun otomatis kalau siswa meninggalkan halaman ujian terlalu lama.
+- Laporan hasil ujian, cetak kartu peserta, jadwal, daftar hadir, dan berita acara.
+- Backup data dan Log Keamanan (audit aktivitas admin/guru).
+- Auto-update langsung dari panel admin (lihat [Update ke versi berikutnya](#update-ke-versi-berikutnya)).
+
+**Premium (butuh file lisensi dari Nifadigital)**
+- **Ujian Aman** — kunci pengerjaan ujian ke Safe Exam Browser atau aplikasi [Siuji Desktop](https://github.com/arrido92/siuji-desktop) resmi: wajib layar penuh, blokir copy-paste dan klik kanan, terkunci ke jendela ujian.
+- **Pengawasan Webcam** — bagian dari paket Ujian Aman, snapshot wajah siswa berkala selama ujian ke penyimpanan S3/Cloudflare R2 milik sekolah sendiri (Siuji tidak pernah menyimpan filenya), untuk ditinjau guru/pengawas.
+- **Soal Bantuan AI** — buat draf soal otomatis dari topik/materi, tinggal ditinjau dan disunting guru sebelum dipakai.
+- **Penjadwalan Remedial Otomatis** — jadwalkan ujian ulang otomatis untuk siswa yang belum tuntas.
+- **Bulk Import Siswa** — impor data siswa massal, tidak perlu input satu per satu.
+
+**Aplikasi pendamping**
+- Android untuk siswa — lihat [tautan Play Store](#aplikasi-siswa-android) di bawah.
+- [Siuji Desktop](https://github.com/arrido92/siuji-desktop) untuk Windows — lihat [bagian instalasi](#aplikasi-siswa-desktop-windows--ujian-aman) di bawah.
+
 ## Aplikasi Siswa (Android)
 
 [![Download di Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/id_badge_web_generic.png)](https://play.google.com/store/apps/details?id=id.siuji.studentclient)

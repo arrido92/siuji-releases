@@ -1,6 +1,6 @@
 {
-  "version": "1.2.6",
-  "release_notes": "Perbaikan: notifikasi auto-update sekarang menunggu sampai 5 menit (bukan 60 detik) sebelum dianggap timeout -- binary Siuji jadi jauh lebih besar sejak fitur Pengawasan Webcam (dependency S3/R2) ditambahkan, jadi unduhan di VPS dengan bandwidth terbatas bisa lebih lama dari 1 menit walau update-nya sendiri tetap berhasil. Perbaikan lain: kamera pengawasan di halaman login tidak lagi ikut aktif kalau Ujian Aman sedang mewajibkan Safe Exam Browser/Aplikasi Desktop Siuji dan halaman dibuka lewat browser biasa yang ditolak.",
+  "version": "1.2.7",
+  "release_notes": "Menu Peralatan > Ujian Aman dirapikan jadi tab (Umum/Android/Pengawasan Webcam). Fitur Pengawasan Webcam sekarang bisa memilih penyimpanan foto: Cloud (S3/Cloudflare R2, seperti sebelumnya) atau Server Lokal (disk server Siuji sendiri) -- cocok untuk sekolah dengan server sendiri yang tidak berlangganan storage cloud terpisah.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

@@ -1,6 +1,6 @@
 # Kebijakan Privasi — Siuji
 
-*Terakhir diperbarui: 21 Juli 2026*
+*Terakhir diperbarui: 2 Agustus 2026*
 
 Kebijakan Privasi ini menjelaskan bagaimana data diproses saat Anda menggunakan aplikasi Siuji ("Aplikasi"), baik lewat aplikasi Android maupun versi web, yang dikembangkan oleh Nifadigital ("kami", "Pengembang").
 
@@ -31,6 +31,12 @@ Sesuai peran Anda (siswa, guru, pengawas, atau admin), Aplikasi mengumpulkan:
 - ID perangkat (dibuat otomatis oleh Aplikasi, bukan nomor IMEI/identitas fisik perangkat), alamat IP, versi aplikasi, jenis klien (Android/Browser).
 - Untuk pengawas ujian (guru): kode verifikasi TOTP (dua-faktor) dipakai membuka kembali sesi ujian yang terkunci karena pelanggaran — disimpan terenkripsi.
 
+**Data kamera (Pengawasan Webcam) — HANYA kalau fitur ini diaktifkan Penyelenggara**
+- Kalau sekolah/madrasah Anda mengaktifkan fitur premium **Pengawasan Webcam** (bagian dari Ujian Aman), Aplikasi mengambil foto singkat dari kamera depan secara berkala SELAMA Anda mengerjakan ujian, untuk ditinjau guru/pengawas sebagai bukti tambahan integritas ujian.
+- Foto **TIDAK PERNAH melewati atau disimpan di server Nifadigital** — diunggah **langsung** dari perangkat Anda ke penyimpanan awan (S3/Cloudflare R2) milik **Penyelenggara sendiri**, sama seperti prinsip di Bagian 1: sekolah Anda tetap pengendali data untuk foto ini.
+- Di aplikasi Android, kamera **wajib** diizinkan untuk bisa memulai ujian kalau fitur ini aktif (beda dari versi web/Safe Exam Browser/Siuji Desktop yang dikonfigurasi otomatis lewat aplikasi resmi sekolah, tanpa dialog izin terpisah) — Anda akan diminta izin akses kamera oleh sistem Android, bukan oleh Nifadigital.
+- Foto HANYA bisa dilihat oleh guru/pengawas yang berwenang atas ujian tersebut (lewat tautan sementara yang kedaluwarsa dalam hitungan menit), dan setiap kali foto dibuka, tercatat siapa & kapan membukanya.
+
 ## 3. Bagaimana Data Digunakan
 
 Data di atas dipakai **semata-mata** untuk menjalankan fungsi inti Aplikasi:
@@ -39,13 +45,13 @@ Data di atas dipakai **semata-mata** untuk menjalankan fungsi inti Aplikasi:
 - Menyajikan soal ujian sesuai jadwal & aturan yang diatur guru/admin.
 - Menyimpan & menilai jawaban ujian.
 - Mencetak kartu ujian dan mengelola akses siswa oleh admin sekolah.
-- Menjaga integritas pelaksanaan ujian (mode aman/kiosk, deteksi pelanggaran).
+- Menjaga integritas pelaksanaan ujian (mode aman/kiosk, deteksi pelanggaran, dan foto Pengawasan Webcam kalau diaktifkan Penyelenggara) — foto webcam TIDAK dipakai untuk tujuan lain di luar peninjauan integritas ujian oleh guru/pengawas.
 
 Kami (Nifadigital) **tidak menggunakan data ini untuk iklan, tidak menjualnya ke pihak ketiga, dan tidak membagikannya ke pihak luar** di luar server milik Penyelenggara tempat data itu tersimpan.
 
 ## 4. Penyimpanan & Keamanan Data
 
-- Data tersimpan di server milik Penyelenggara (bisa berupa server sekolah sendiri, VPS, atau layanan hosting yang dipilih Penyelenggara).
+- Data tersimpan di server milik Penyelenggara (bisa berupa server sekolah sendiri, VPS, atau layanan hosting yang dipilih Penyelenggara). Khusus foto Pengawasan Webcam, tersimpan terpisah di penyimpanan awan (S3/Cloudflare R2) milik Penyelenggara sendiri, bukan di server aplikasi Siuji itu sendiri.
 - Komunikasi antara Aplikasi dan server dilindungi enkripsi (HTTPS wajib untuk server publik).
 - Sesi login perangkat mobile diikat ke perangkat tertentu (device binding) dengan tanda tangan kriptografis per-permintaan, untuk mencegah penyalahgunaan sesi oleh perangkat lain.
 - Kata sandi tidak pernah disimpan dalam bentuk teks biasa untuk keperluan autentikasi (memakai hash satu-arah).

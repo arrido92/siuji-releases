@@ -73,5 +73,5 @@ Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Perubahan akan
 Pertanyaan umum seputar aplikasi Siuji (bukan permintaan data pribadi spesifik, yang harus lewat sekolah Anda) dapat disampaikan ke:
 
 **Nifadigital**
-Email: support@nifadigital.web.id
+Email: info@nifadigital.biz.id
 Website: https://nifadigital.web.id

@@ -1,6 +1,6 @@
 {
-  "version": "1.2.7",
-  "release_notes": "Menu Peralatan > Ujian Aman dirapikan jadi tab (Umum/Android/Pengawasan Webcam). Fitur Pengawasan Webcam sekarang bisa memilih penyimpanan foto: Cloud (S3/Cloudflare R2, seperti sebelumnya) atau Server Lokal (disk server Siuji sendiri) -- cocok untuk sekolah dengan server sendiri yang tidak berlangganan storage cloud terpisah.",
+  "version": "1.2.8",
+  "release_notes": "Perbaikan penting: auto-update sekarang memverifikasi ukuran file hasil unduhan sebelum menimpa binary yang berjalan -- sebelumnya, koneksi VPS yang terputus di tengah unduhan (bandwidth terbatas ke GitHub) bisa menghasilkan binary TERPOTONG yang tetap dipasang, membuat aplikasi gagal menyala sama sekali setelah auto-update. Sekarang unduhan yang tidak lengkap otomatis ditolak dan binary lama tetap aman terpakai.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

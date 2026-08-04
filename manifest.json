@@ -1,6 +1,6 @@
 {
-  "version": "1.2.8",
-  "release_notes": "Perbaikan penting: auto-update sekarang memverifikasi ukuran file hasil unduhan sebelum menimpa binary yang berjalan -- sebelumnya, koneksi VPS yang terputus di tengah unduhan (bandwidth terbatas ke GitHub) bisa menghasilkan binary TERPOTONG yang tetap dipasang, membuat aplikasi gagal menyala sama sekali setelah auto-update. Sekarang unduhan yang tidak lengkap otomatis ditolak dan binary lama tetap aman terpakai.",
+  "version": "1.2.9",
+  "release_notes": "Perbaikan penting: binary Windows sebelumnya sering di-deteksi keliru sebagai virus (Trojan:Win32/Gracing.I) oleh Windows Defender/SmartScreen saat diunduh -- murni false positive dari heuristik antivirus terhadap teknik obfuscation (garble) yang dipakai untuk melindungi kode dari reverse-engineering kasar. Mulai versi ini, build Windows dan Linux TIDAK lagi memakai garble (simbol tetap di-strip seperti biasa), sehingga tidak lagi memicu deteksi tersebut. Ukuran file unduhan juga jadi jauh lebih kecil dari sebelumnya.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

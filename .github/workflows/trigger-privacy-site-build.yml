@@ -1,0 +1,22 @@
+name: Trigger rebuild situs privacy policy
+
+# privacy-policy.md di repo publik ini tetap satu-satunya sumber kebenaran.
+# Build & hosting HTML-nya ada di repo PRIVATE terpisah (arrido92/siuji-
+# privacy-site, dipasang di Cloudflare Pages) -- workflow ini cuma
+# memberitahu Cloudflare "ada perubahan, build ulang", lewat Deploy Hook,
+# supaya situsnya tetap otomatis ter-update tanpa perlu push manual ke repo
+# private itu.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - privacy-policy.md
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Panggil Cloudflare Pages Deploy Hook
+        run: curl -sf -X POST "${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}"

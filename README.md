@@ -173,13 +173,104 @@ Image resmi: `ghcr.io/arrido92/siuji` — tag `:latest` selalu ikut rilis terbar
 
 Data (`uploads/`, `backups/`, database PostgreSQL) tersimpan di Docker volume terpisah dari container `app` — aman kalau image di-update (`docker compose pull && docker compose up -d`), tidak ikut hilang.
 
+### Pakai Domain Sendiri (HTTPS Otomatis dengan Caddy)
+
+Langkah di atas cuma bisa diakses lewat `http://<ip-server>:8080` — kalau Anda punya domain sendiri (mis. `siuji.sekolahanda.sch.id`) dan mau diakses lewat alamat itu **dengan HTTPS (gembok hijau) tanpa `:8080` di belakang**, perlu 1 program tambahan bernama **Caddy** yang dipasang langsung di VPS (di luar Docker) — tugasnya cuma "menerima" alamat domain dan meneruskannya ke Siuji yang sudah jalan di port 8080, sambil otomatis mengurus sertifikat HTTPS gratis dari Let's Encrypt (Anda tidak perlu beli/perpanjang sertifikat manual).
+
+**1. Arahkan domain ke IP server (DNS)**
+
+Buka dashboard tempat Anda beli domain (atau Cloudflare kalau domainnya sudah dipindah ke sana), buat 1 **A record** baru:
+
+| Kolom | Isi |
+|---|---|
+| Type | `A` |
+| Name/Host | subdomain pilihan Anda, mis. `siuji` (jadi `siuji.sekolahanda.sch.id`) |
+| Value/Content | alamat IP VPS Anda, mis. `103.59.95.238` |
+| Proxy status (khusus Cloudflare) | **Matikan (DNS only / awan abu-abu)** — kalau dinyalakan, Cloudflare ikut coba urus HTTPS juga dan malah bentrok dengan Caddy |
+
+Tunggu beberapa menit sampai domain itu bisa di-*ping* dan menunjuk ke IP server (bisa dicek lewat `ping siuji.sekolahanda.sch.id` dari komputer Anda).
+
+**2. Install Caddy di VPS** (lewat SSH, jalankan satu-satu)
+
+```bash
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update && sudo apt install -y caddy
+```
+
+**3. Beri tahu Caddy domain mana yang harus diteruskan ke mana**
+
+Buka file konfigurasinya (bikin baru kalau belum ada):
+```bash
+sudo nano /etc/caddy/Caddyfile
+```
+Hapus semua isinya (kalau ada), ganti dengan (sesuaikan domainnya):
+```
+siuji.sekolahanda.sch.id {
+    reverse_proxy localhost:8080
+}
+```
+Simpan (di `nano`: `Ctrl+O` lalu `Enter`, keluar dengan `Ctrl+X`).
+
+**4. Jalankan ulang Caddy supaya konfigurasi baru terbaca**
+```bash
+sudo systemctl restart caddy
+```
+Caddy otomatis menghubungi Let's Encrypt untuk mengambil sertifikat HTTPS domain itu di sini — prosesnya beberapa detik saja, tidak perlu langkah tambahan apa pun.
+
+**5. Buka akses firewall** untuk HTTPS (443) dan HTTP (80, dipakai Caddy untuk verifikasi sertifikat) — port 8080 tidak perlu dibuka ke publik lagi, cukup diakses Caddy dari `localhost`:
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+
+**Selesai** — buka `https://siuji.sekolahanda.sch.id` di browser, harusnya langsung muncul Siuji dengan gembok HTTPS, tanpa perlu ketik `:8080` lagi.
+
+### Satu VPS untuk Beberapa Sekolah Sekaligus
+
+Kalau 1 VPS ini mau dipakai melayani **beberapa sekolah berbeda** (masing-masing data/database-nya terpisah total, tidak bercampur), pola di atas tinggal diulang dengan 2 penyesuaian: **folder instalasi beda** dan **port beda** per sekolah — Caddy yang tadi dipasang cukup 1 kali saja, dia yang nanti membagi-bagi domain ke Siuji sekolah yang benar.
+
+**Contoh: 2 sekolah, "SD Melati" dan "SMP Mawar", 1 VPS yang sama.**
+
+**1. Instalasi sekolah pertama** — pakai cara 1-perintah biasa, port default `8080`:
+```bash
+SIUJI_INSTALL_DIR=/opt/siuji-sd-melati curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo bash
+```
+
+**2. Instalasi sekolah kedua** — folder beda, TAPI kali ini pakai cara manual (bukan 1-perintah) supaya bisa ganti port `8080` jadi `8081` dulu **sebelum** dijalankan (port 8080 di VPS ini sudah dipakai sekolah pertama, tidak boleh dipakai dobel):
+```bash
+mkdir -p /opt/siuji-smp-mawar && cd /opt/siuji-smp-mawar
+curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/docker-compose.yml -o docker-compose.yml
+curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/.env.docker.example -o .env
+# edit .env: isi DB_PASSWORD, JWT_SECRET, ADMIN_PASSWORD, DAN ganti baris APP_PORT=8080 jadi APP_PORT=8081
+docker compose up -d
+```
+Ulangi pola ini (folder baru + port baru: 8082, 8083, dst.) untuk sekolah ketiga dan seterusnya. Karena tiap sekolah punya folder sendiri, Docker otomatis memisahkan total database dan berkasnya masing-masing — sekolah A tidak akan pernah bisa melihat data sekolah B.
+
+**3. Arahkan 2 domain** ke IP VPS yang sama (ulangi langkah "Arahkan domain ke IP server" di atas untuk masing-masing, mis. `sd-melati.sch.id` dan `smp-mawar.sch.id`).
+
+**4. Satu Caddyfile untuk semua sekolah** — edit `/etc/caddy/Caddyfile` (Caddy yang sama, tidak perlu install ulang), tambahkan 1 blok per sekolah:
+```
+sd-melati.sch.id {
+    reverse_proxy localhost:8080
+}
+
+smp-mawar.sch.id {
+    reverse_proxy localhost:8081
+}
+```
+Lalu `sudo systemctl restart caddy` sekali lagi. Caddy otomatis mengurus sertifikat HTTPS terpisah untuk kedua domain itu.
+
+Kalau nanti mau tambah sekolah lagi, tinggal ulangi langkah 1–2–3 (folder+port baru, domain baru) lalu tambahkan 1 blok baru lagi di Caddyfile yang sama.
+
 ---
 
 ## Update ke versi berikutnya
 
 - **Windows / Linux tanpa systemd**: hentikan proses lama, timpa file binary dengan yang baru dari repo ini, jalankan lagi. Konfigurasi (`.env`) tidak perlu diganti/disentuh.
 - **Linux yang sudah terdaftar systemd** (lihat langkah 4 di atas): bisa lewat tombol **"Update Sekarang"** di panel admin (`Pengaturan > Peralatan` setelah update tersedia) — otomatis unduh, ganti file, restart sendiri.
-- **Docker**: `docker compose pull && docker compose up -d` di folder instalasi (`/opt/siuji` kalau pakai `install.sh`) — tombol "Update Sekarang" di panel admin akan menampilkan perintah ini juga, bukan mengunduh otomatis (beda dari Linux systemd di atas).
+- **Docker**: `docker compose pull && docker compose up -d` di folder instalasi (`/opt/siuji` kalau pakai `install.sh`) — tombol "Update Sekarang" di panel admin akan menampilkan perintah ini juga, bukan mengunduh otomatis (beda dari Linux systemd di atas). Kalau 1 VPS melayani beberapa sekolah (lihat [Satu VPS untuk Beberapa Sekolah Sekaligus](#satu-vps-untuk-beberapa-sekolah-sekaligus)), ulangi perintah ini di FOLDER MASING-MASING sekolah satu per satu — meng-update 1 folder tidak ikut meng-update folder sekolah lain.
 
 Untuk supaya panel admin bisa MENDETEKSI ada versi baru sama sekali, isi di `.env`:
 ```

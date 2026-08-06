@@ -1,10 +1,8 @@
-# Siuji — Rilis
+# Siuji CBT — Rilis
 
 **Situs Resmi: [siuji-cbt.nifadigital.biz.id](https://siuji-cbt.nifadigital.biz.id)**
 
-Aplikasi Ujian Online (Siuji) — boleh digunakan untuk kepentingan pendidikan di Indonesia. Aplikasi ini sudah siap pakai bagi sekolah/madrasah atau lembaga lain yang ingin menggunakan aplikasi ujian online Siuji.
-Isinya dipakai juga oleh fitur cek/auto-update di panel admin Siuji (`Pengaturan > Peralatan > Ujian Aman`),
-lewat file `manifest.json` di root repo ini.
+Aplikasi Ujian Online (Siuji) — boleh digunakan untuk kepentingan pendidikan di Indonesia. Aplikasi ini sudah siap pakai bagi sekolah/madrasah atau lembaga lain yang ingin menggunakan aplikasi ujian online Siuji CBT.
 
 Hak cipta tetap milik Nifadigital.
 

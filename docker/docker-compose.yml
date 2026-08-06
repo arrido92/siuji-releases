@@ -6,8 +6,13 @@ services:
       POSTGRES_USER: ${DB_USER:-siuji}
       POSTGRES_PASSWORD: "${DB_PASSWORD:?isi DB_PASSWORD di .env -- lihat .env.docker.example}"
       POSTGRES_DB: ${DB_NAME:-siuji_db}
+    # Mount ke /var/lib/postgresql (folder induk), BUKAN /var/lib/postgresql/data
+    # -- wajib sejak image resmi Postgres 18: mount langsung ke .../data
+    # ditolak start sama sekali (lihat docker-library/postgres#1259), karena
+    # 18+ menaruh data di subfolder bernama versi major (mis. .../18/docker)
+    # supaya pg_upgrade antar versi major bisa jalan bersih.
     volumes:
-      - siuji_pgdata:/var/lib/postgresql/data
+      - siuji_pgdata:/var/lib/postgresql
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-siuji}']
       interval: 5s

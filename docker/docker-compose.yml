@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-siuji}
+      POSTGRES_PASSWORD: "${DB_PASSWORD:?isi DB_PASSWORD di .env -- lihat .env.docker.example}"
+      POSTGRES_DB: ${DB_NAME:-siuji_db}
+    volumes:
+      - siuji_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-siuji}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    # Image resmi Siuji -- dibuild & dipublikasikan otomatis lewat GitHub
+    # Actions (release.yml di repo arrido92/siuji) tiap kali ada rilis versi
+    # baru. Ganti tag ":latest" jadi versi tertentu (mis. ":1.3.0") kalau mau
+    # mengunci versi, bukan otomatis ikut versi terbaru.
+    image: ghcr.io/arrido92/siuji:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - '${APP_PORT:-8080}:8080'
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      APP_PORT: '8080'
+      DB_HOST: db
+      DB_PORT: '5432'
+      DB_USER: ${DB_USER:-siuji}
+      DB_PASSWORD: "${DB_PASSWORD:?isi DB_PASSWORD di .env -- lihat .env.docker.example}"
+      DB_NAME: ${DB_NAME:-siuji_db}
+      DB_SSLMODE: disable
+      JWT_SECRET: "${JWT_SECRET:?isi JWT_SECRET di .env -- generate lewat 'openssl rand -hex 32'}"
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@siuji.local}
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:?isi ADMIN_PASSWORD di .env dengan password kuat}"
+      LICENSE_CHECKIN_URL: ${LICENSE_CHECKIN_URL:-}
+    volumes:
+      - siuji_data:/data
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:8080/health']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  siuji_pgdata:
+  siuji_data:

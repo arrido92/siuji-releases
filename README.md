@@ -265,6 +265,36 @@ Lalu `sudo systemctl restart caddy` sekali lagi. Caddy otomatis mengurus sertifi
 
 Kalau nanti mau tambah sekolah lagi, tinggal ulangi langkah 1–2–3 (folder baru, domain baru, catat port yang kepilih) lalu tambahkan 1 blok baru lagi di Caddyfile yang sama.
 
+### Uninstall (Docker)
+
+Semua langkah di bawah dijalankan di **folder instalasi sekolah yang mau dihapus** (`/opt/siuji` kalau cuma 1 instalasi, atau `/opt/siuji-nama-sekolah` kalau ikut pola multi-sekolah di atas) — menghapus 1 sekolah TIDAK memengaruhi sekolah lain di VPS yang sama, karena masing-masing folder + database-nya sudah terpisah total sejak awal.
+
+**1. Matikan & hapus container-nya**
+```bash
+cd /opt/siuji   # ganti sesuai folder instalasi sekolah yang mau dihapus
+docker compose down
+```
+Ini menghentikan dan menghapus container `app`+`db`, TAPI **data (database, foto siswa, backup) masih tersimpan** di Docker volume — aman kalau nanti berubah pikiran mau pasang lagi (tinggal `docker compose up -d` lagi, data langsung kebaca lagi seperti semula).
+
+**2. Kalau memang mau hapus datanya juga (PERMANEN, tidak bisa dibatalkan)**
+```bash
+docker compose down -v
+```
+Tambahan `-v` ini yang menghapus volume (database + berkas) sekaligus — pastikan sudah yakin/sudah backup sebelum menjalankan ini.
+
+**3. Hapus folder instalasinya**
+```bash
+sudo rm -rf /opt/siuji   # ganti sesuai folder yang sama seperti langkah 1
+```
+
+**4. Kalau sekolah ini pakai domain sendiri lewat Caddy** (lihat bagian [Pakai Domain Sendiri](#pakai-domain-sendiri-https-otomatis-dengan-caddy) di atas), hapus juga blok domainnya dari `/etc/caddy/Caddyfile`, lalu:
+```bash
+sudo systemctl restart caddy
+```
+(Domain lain yang masih ada di Caddyfile tidak terganggu.) Boleh juga hapus A record domain itu di DNS kalau memang sudah tidak dipakai sama sekali.
+
+Untuk **membongkar Docker dari VPS sepenuhnya** (bukan cuma 1 sekolah, tapi Docker Engine-nya sendiri — biasanya tidak perlu, cuma kalau VPS mau dipakai untuk hal lain sama sekali), ikuti panduan resmi Docker: https://docs.docker.com/engine/install/#uninstall-docker-engine
+
 ---
 
 ## Update ke versi berikutnya

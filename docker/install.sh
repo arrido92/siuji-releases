@@ -20,6 +20,46 @@ COMPOSE_URL="https://raw.githubusercontent.com/arrido92/siuji-releases/main/dock
 log() { printf '%s\n' "--> $*"; }
 err() { printf '%s\n' "!!! $*" >&2; }
 
+# find_free_app_port memilih port HOST yang belum dipakai, mulai dari 8080
+# naik berurutan -- supaya skrip 1-perintah ini tetap bisa dipakai berkali-
+# kali di 1 VPS yang sama untuk beberapa sekolah tanpa perlu edit .env
+# manual (lihat README "Satu VPS untuk Beberapa Sekolah Sekaligus"). Deteksi
+# HARUS di lapisan host (bukan di dalam Go/container) karena konflik port
+# publish Docker terjadi di sini, di luar jangkauan pengecekan port yang ada
+# di dalam binary Siuji sendiri (findAvailablePort di cmd/api/port.go --
+# yang itu cuma melihat network namespace container, selalu kosong).
+#
+# SIUJI_APP_PORT bisa di-set eksplisit untuk lewati pemindaian ini sama
+# sekali (skenario terskrip/otomatis, mis. rollout banyak sekolah lewat CI).
+find_free_app_port() {
+  if [ -n "${SIUJI_APP_PORT:-}" ]; then
+    echo "$SIUJI_APP_PORT"
+    return 0
+  fi
+
+  if ! command -v ss >/dev/null 2>&1; then
+    err "Perintah 'ss' tidak ditemukan, lewati deteksi port otomatis (pakai 8080 default)."
+    echo 8080
+    return 0
+  fi
+
+  preferred=8080
+  max_attempts=200
+  candidate=$preferred
+  attempt=0
+  while [ "$attempt" -lt "$max_attempts" ]; do
+    if ! ss -ltn 2>/dev/null | awk '{print $4}' | grep -q ":${candidate}\$"; then
+      echo "$candidate"
+      return 0
+    fi
+    candidate=$((candidate + 1))
+    attempt=$((attempt + 1))
+  done
+
+  err "Tidak menemukan port kosong dari $preferred sampai $candidate. Set APP_PORT manual di .env sebelum 'docker compose up -d'."
+  return 1
+}
+
 if [ "$(id -u)" -ne 0 ]; then
   err "Skrip ini perlu root (pasang Docker & tulis ke /opt). Jalankan pakai sudo."
   exit 1
@@ -58,6 +98,10 @@ fi
 if [ -f .env ]; then
   log ".env sudah ada, tidak ditimpa (dianggap instalasi lama)."
 else
+  log "Mencari port host yang masih kosong..."
+  APP_PORT_CHOSEN="$(find_free_app_port)" || exit 1
+  log "Port terpilih: $APP_PORT_CHOSEN"
+
   log "Membuat .env dengan secret & password acak (unik untuk instalasi ini)..."
   RANDOM_JWT_SECRET="$(openssl rand -hex 32)"
   RANDOM_ADMIN_PASSWORD="$(openssl rand -base64 12 | tr -d '=+/')"
@@ -68,7 +112,7 @@ DB_PASSWORD=$(openssl rand -hex 16)
 JWT_SECRET=$RANDOM_JWT_SECRET
 ADMIN_EMAIL=admin@siuji.local
 ADMIN_PASSWORD=$RANDOM_ADMIN_PASSWORD
-APP_PORT=8080
+APP_PORT=$APP_PORT_CHOSEN
 APP_ENV=production
 EOF
   chmod 600 .env
@@ -91,6 +135,7 @@ while [ "$i" -lt 60 ]; do
 done
 
 SERVER_IP="$(curl -fsSL -4 https://ifconfig.me 2>/dev/null || echo "<IP-SERVER-ANDA>")"
+APP_PORT_SHOWN="$(grep '^APP_PORT=' .env | cut -d= -f2)"
 ADMIN_EMAIL_SHOWN="$(grep '^ADMIN_EMAIL=' .env | cut -d= -f2)"
 ADMIN_PASSWORD_SHOWN="$(grep '^ADMIN_PASSWORD=' .env | cut -d= -f2)"
 
@@ -98,7 +143,7 @@ ADMIN_PASSWORD_SHOWN="$(grep '^ADMIN_PASSWORD=' .env | cut -d= -f2)"
 # sempat dicatat, file ini jadi cadangan yang bisa dibuka kapan saja nanti.
 cat > "$INSTALL_DIR/kredensial-awal.txt" <<EOF
 Siuji -- kredensial admin awal (dibuat: $(date))
-URL   : http://$SERVER_IP:8080
+URL   : http://$SERVER_IP:$APP_PORT_SHOWN
 Email : $ADMIN_EMAIL_SHOWN
 Sandi : $ADMIN_PASSWORD_SHOWN
 
@@ -111,7 +156,7 @@ echo ""
 echo "============================================================"
 echo " Instalasi selesai!"
 echo ""
-echo "   URL   : http://$SERVER_IP:8080"
+echo "   URL   : http://$SERVER_IP:$APP_PORT_SHOWN"
 echo "   Email : $ADMIN_EMAIL_SHOWN"
 echo "   Sandi : $ADMIN_PASSWORD_SHOWN"
 echo ""

@@ -51,8 +51,9 @@ Aplikasi desktop khusus Windows untuk mengunci pengerjaan ujian ke jendela resmi
 ## Struktur folder
 
 ```
-windows/      siuji.exe + .env.example   -> Windows (Server/Desktop)
-linux/        siuji + .env.example       -> Linux (Ubuntu/Debian, VPS polos, MAUPUN VPS yang dikelola aaPanel -- binary-nya sama, lihat catatan aaPanel di bawah)
+windows/      siuji.exe + .env.example              -> Windows (Server/Desktop)
+linux/        siuji + .env.example                  -> Linux (Ubuntu/Debian, VPS polos, MAUPUN VPS yang dikelola aaPanel -- binary-nya sama, lihat catatan aaPanel di bawah)
+docker/       install.sh + docker-compose.yml + .env.docker.example  -> Instalasi via Docker (image di GitHub Container Registry, bukan file di repo ini)
 ```
 
 (Aplikasi Desktop Windows di-hosting terpisah di Cloudflare R2 — lihat tautan unduh di atas, bukan di folder repo ini.)
@@ -146,10 +147,39 @@ Sama persis seperti Linux polos di atas — **unduh binary dan `.env.example` da
 
 ---
 
+## Instalasi via Docker
+
+Tidak perlu install PostgreSQL sendiri — `docker compose` menyiapkan database + server Siuji sekaligus dalam 1 container masing-masing. Cocok untuk yang sudah familiar Docker atau ingin instalasi paling cepat.
+
+**Cara tercepat (1 perintah)** — pasang Docker otomatis kalau belum ada, generate `.env` dengan secret & password admin **acak unik** per instalasi (bukan default yang sama di semua instalasi), lalu langsung jalan:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo bash
+```
+
+Setelah selesai, kredensial admin awal (URL, email, password acak) ditampilkan di terminal dan disimpan di `/opt/siuji/kredensial-awal.txt` — segera login dan ganti lewat menu Profil.
+
+**Cara manual** (kalau mau baca dulu isinya sebelum jalan, atau sudah punya folder instalasi sendiri):
+
+```bash
+mkdir -p /opt/siuji && cd /opt/siuji
+curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/docker-compose.yml -o docker-compose.yml
+curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/.env.docker.example -o .env
+# edit .env: isi DB_PASSWORD, JWT_SECRET (openssl rand -hex 32), ADMIN_PASSWORD
+docker compose up -d
+```
+
+Image resmi: `ghcr.io/arrido92/siuji` — tag `:latest` selalu ikut rilis terbaru, atau kunci ke versi tertentu (mis. `:1.3.0`) dengan mengganti tag di `docker-compose.yml` / lewat `SIUJI_VERSION=1.3.0` sebelum menjalankan `install.sh`.
+
+Data (`uploads/`, `backups/`, database PostgreSQL) tersimpan di Docker volume terpisah dari container `app` — aman kalau image di-update (`docker compose pull && docker compose up -d`), tidak ikut hilang.
+
+---
+
 ## Update ke versi berikutnya
 
 - **Windows / Linux tanpa systemd**: hentikan proses lama, timpa file binary dengan yang baru dari repo ini, jalankan lagi. Konfigurasi (`.env`) tidak perlu diganti/disentuh.
 - **Linux yang sudah terdaftar systemd** (lihat langkah 4 di atas): bisa lewat tombol **"Update Sekarang"** di panel admin (`Pengaturan > Peralatan` setelah update tersedia) — otomatis unduh, ganti file, restart sendiri.
+- **Docker**: `docker compose pull && docker compose up -d` di folder instalasi (`/opt/siuji` kalau pakai `install.sh`) — tombol "Update Sekarang" di panel admin akan menampilkan perintah ini juga, bukan mengunduh otomatis (beda dari Linux systemd di atas).
 
 Untuk supaya panel admin bisa MENDETEKSI ada versi baru sama sekali, isi di `.env`:
 ```

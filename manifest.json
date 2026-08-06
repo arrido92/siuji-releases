@@ -1,6 +1,6 @@
 {
-  "version": "1.3.2",
-  "release_notes": "Docker: standardkan ke PostgreSQL 18 (db + client tools pg_dump/pg_restore) -- memperbaiki restore gagal untuk backup dari server PostgreSQL yang lebih baru (mis. aaPanel dengan PG18).",
+  "version": "1.3.3",
+  "release_notes": "Perbaiki fitur Restore: migrasi backup lintas server sekarang berhasil walau nama user database sumber & tujuan berbeda -- sebelumnya gagal dengan error role does not exist kalau server sumber pakai nama user kustom (mis. buatan aaPanel).",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

@@ -10,6 +10,17 @@
 #
 # Untuk yang mau baca dulu isinya sebelum jalan (tanpa curl|bash), lihat
 # docker-compose.yml + .env.docker.example di repo ini -- caranya di README.
+#
+# PENTING soal SIUJI_INSTALL_DIR / SIUJI_APP_PORT / SIUJI_VERSION (dipakai
+# untuk 1 VPS banyak sekolah, lihat README): variabel itu HARUS ditulis
+# SETELAH "sudo", SEBELUM "bash" -- bukan di depan "curl". Skrip ini
+# dijalankan lewat pipa (curl | sudo bash); variabel yang ditulis di depan
+# curl cuma "kelihatan" oleh curl sendiri, hilang begitu sampai ke sisi
+# "sudo bash" di ujung lain pipa (ditambah sudo yang membersihkan environment
+# demi keamanan) -- skrip akan diam-diam jatuh ke nilai default TANPA error
+# apa pun kalau salah urutan, jadi mudah tidak disadari. Contoh yang BENAR:
+#
+#   curl -fsSL ...install.sh | sudo SIUJI_INSTALL_DIR=/opt/siuji-sekolah-b bash
 
 set -eu
 

@@ -1,5 +1,7 @@
 # Siuji — Rilis
 
+**Situs Resmi: [siuji-cbt.nifadigital.biz.id](https://siuji-cbt.nifadigital.biz.id)** — fitur, cara instalasi, dan tautan unduh dalam tampilan yang lebih enak dibaca. Repo ini tetap jadi sumber file mentah (binary + `manifest.json`) yang dipakai situs itu dan mekanisme auto-update Siuji.
+
 Aplikasi Ujian Online (Siuji) — boleh digunakan untuk kepentingan pendidikan di Indonesia. Aplikasi ini sudah siap pakai bagi sekolah/madrasah atau lembaga lain yang ingin menggunakan aplikasi ujian online Siuji.
 Isinya dipakai juga oleh fitur cek/auto-update di panel admin Siuji (`Pengaturan > Peralatan > Ujian Aman`),
 lewat file `manifest.json` di root repo ini.

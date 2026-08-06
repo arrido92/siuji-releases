@@ -169,7 +169,7 @@ curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker
 docker compose up -d
 ```
 
-Image resmi: `ghcr.io/arrido92/siuji` — tag `:latest` selalu ikut rilis terbaru, atau kunci ke versi tertentu (mis. `:1.3.0`) dengan mengganti tag di `docker-compose.yml` / lewat `SIUJI_VERSION=1.3.0` sebelum menjalankan `install.sh`.
+Image resmi: `ghcr.io/arrido92/siuji` — tag `:latest` selalu ikut rilis terbaru, atau kunci ke versi tertentu (mis. `:1.3.0`) dengan mengganti tag di `docker-compose.yml`, atau lewat `curl -fsSL ... | sudo SIUJI_VERSION=1.3.0 bash` (perhatikan `SIUJI_VERSION=...` ditulis SETELAH `sudo`, bukan sebelum `curl` — lihat catatan di bawah kenapa urutannya penting).
 
 Data (`uploads/`, `backups/`, database PostgreSQL) tersimpan di Docker volume terpisah dari container `app` — aman kalau image di-update (`docker compose pull && docker compose up -d`), tidak ikut hilang.
 
@@ -233,21 +233,26 @@ Kalau 1 VPS ini mau dipakai melayani **beberapa sekolah berbeda** (masing-masing
 
 **Contoh: 2 sekolah, "SD Melati" dan "SMP Mawar", 1 VPS yang sama.**
 
+> **Penting soal urutan penulisan variabel**: `install.sh` dijalankan lewat `curl ... | sudo bash` — kalau variabel (`SIUJI_INSTALL_DIR`, `SIUJI_APP_PORT`, `SIUJI_VERSION`) ditulis DI DEPAN `curl` seperti kebiasaan umum (`SIUJI_INSTALL_DIR=/opt/x curl ... | sudo bash`), nilainya **DIAM-DIAM TIDAK TERBACA** oleh skrip (variabel itu cuma "kelihatan" oleh `curl`, hilang begitu masuk ke `sudo bash` di sisi lain pipa `|`, dan `sudo` sendiri membersihkan environment demi keamanan) — akibatnya skrip selalu jatuh ke folder/port default tanpa pesan error apa pun, jadi mudah tidak disadari. **Tulis variabelnya SETELAH `sudo`, SEBELUM `bash`** seperti contoh-contoh di bawah ini supaya benar-benar terbaca.
+
 **1. Instalasi sekolah pertama** — cukup ganti nama foldernya, sisanya persis cara 1-perintah biasa:
 ```bash
-SIUJI_INSTALL_DIR=/opt/siuji-sd-melati curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo SIUJI_INSTALL_DIR=/opt/siuji-sd-melati bash
 ```
 Karena belum ada apa pun di VPS ini, port yang kepilih otomatis `8080` — bisa dilihat di ringkasan akhir instalasi (baris "URL").
 
 **2. Instalasi sekolah kedua** — SAMA PERSIS, cuma ganti nama folder lagi:
 ```bash
-SIUJI_INSTALL_DIR=/opt/siuji-smp-mawar curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo SIUJI_INSTALL_DIR=/opt/siuji-smp-mawar bash
 ```
 Kali ini `install.sh` otomatis mendeteksi `8080` sudah dipakai sekolah pertama, jadi otomatis memilih `8081` — **catat port yang muncul di ringkasan akhir** (baris "URL", mis. `http://103.59.95.238:8081`), dibutuhkan di langkah 4 nanti untuk Caddyfile.
 
 Ulangi pola ini (folder baru saja, port menyesuaikan sendiri) untuk sekolah ketiga dan seterusnya. Karena tiap sekolah punya folder sendiri, Docker otomatis memisahkan total database dan berkasnya masing-masing — sekolah A tidak akan pernah bisa melihat data sekolah B.
 
-> Kalau mau **mengunci port tertentu sendiri** (bukan otomatis), set `SIUJI_APP_PORT` sebelum menjalankan perintahnya, mis. `SIUJI_APP_PORT=8081 SIUJI_INSTALL_DIR=/opt/siuji-smp-mawar curl -fsSL ... | sudo bash`.
+> Kalau mau **mengunci port tertentu sendiri** (bukan otomatis), tambahkan `SIUJI_APP_PORT` — boleh berbarengan dengan `SIUJI_INSTALL_DIR`, tetap di posisi setelah `sudo`:
+> ```bash
+> curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo SIUJI_INSTALL_DIR=/opt/siuji-smp-mawar SIUJI_APP_PORT=8081 bash
+> ```
 
 **3. Arahkan 2 domain** ke IP VPS yang sama (ulangi langkah "Arahkan domain ke IP server" di atas untuk masing-masing, mis. `sd-melati.sch.id` dan `smp-mawar.sch.id`).
 

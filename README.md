@@ -229,28 +229,29 @@ sudo ufw allow 443/tcp
 
 ### Satu VPS untuk Beberapa Sekolah Sekaligus
 
-Kalau 1 VPS ini mau dipakai melayani **beberapa sekolah berbeda** (masing-masing data/database-nya terpisah total, tidak bercampur), pola di atas tinggal diulang dengan 2 penyesuaian: **folder instalasi beda** dan **port beda** per sekolah — Caddy yang tadi dipasang cukup 1 kali saja, dia yang nanti membagi-bagi domain ke Siuji sekolah yang benar.
+Kalau 1 VPS ini mau dipakai melayani **beberapa sekolah berbeda** (masing-masing data/database-nya terpisah total, tidak bercampur), pola di atas tinggal diulang dengan 1 penyesuaian: **folder instalasi beda** per sekolah — port host otomatis dipilihkan (`install.sh` sudah pintar mendeteksi port yang masih kosong sendiri, mulai dari 8080 lalu naik kalau sudah dipakai sekolah lain), dan Caddy yang tadi dipasang cukup 1 kali saja, dia yang nanti membagi-bagi domain ke Siuji sekolah yang benar.
 
 **Contoh: 2 sekolah, "SD Melati" dan "SMP Mawar", 1 VPS yang sama.**
 
-**1. Instalasi sekolah pertama** — pakai cara 1-perintah biasa, port default `8080`:
+**1. Instalasi sekolah pertama** — cukup ganti nama foldernya, sisanya persis cara 1-perintah biasa:
 ```bash
 SIUJI_INSTALL_DIR=/opt/siuji-sd-melati curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo bash
 ```
+Karena belum ada apa pun di VPS ini, port yang kepilih otomatis `8080` — bisa dilihat di ringkasan akhir instalasi (baris "URL").
 
-**2. Instalasi sekolah kedua** — folder beda, TAPI kali ini pakai cara manual (bukan 1-perintah) supaya bisa ganti port `8080` jadi `8081` dulu **sebelum** dijalankan (port 8080 di VPS ini sudah dipakai sekolah pertama, tidak boleh dipakai dobel):
+**2. Instalasi sekolah kedua** — SAMA PERSIS, cuma ganti nama folder lagi:
 ```bash
-mkdir -p /opt/siuji-smp-mawar && cd /opt/siuji-smp-mawar
-curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/docker-compose.yml -o docker-compose.yml
-curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/.env.docker.example -o .env
-# edit .env: isi DB_PASSWORD, JWT_SECRET, ADMIN_PASSWORD, DAN ganti baris APP_PORT=8080 jadi APP_PORT=8081
-docker compose up -d
+SIUJI_INSTALL_DIR=/opt/siuji-smp-mawar curl -fsSL https://raw.githubusercontent.com/arrido92/siuji-releases/main/docker/install.sh | sudo bash
 ```
-Ulangi pola ini (folder baru + port baru: 8082, 8083, dst.) untuk sekolah ketiga dan seterusnya. Karena tiap sekolah punya folder sendiri, Docker otomatis memisahkan total database dan berkasnya masing-masing — sekolah A tidak akan pernah bisa melihat data sekolah B.
+Kali ini `install.sh` otomatis mendeteksi `8080` sudah dipakai sekolah pertama, jadi otomatis memilih `8081` — **catat port yang muncul di ringkasan akhir** (baris "URL", mis. `http://103.59.95.238:8081`), dibutuhkan di langkah 4 nanti untuk Caddyfile.
+
+Ulangi pola ini (folder baru saja, port menyesuaikan sendiri) untuk sekolah ketiga dan seterusnya. Karena tiap sekolah punya folder sendiri, Docker otomatis memisahkan total database dan berkasnya masing-masing — sekolah A tidak akan pernah bisa melihat data sekolah B.
+
+> Kalau mau **mengunci port tertentu sendiri** (bukan otomatis), set `SIUJI_APP_PORT` sebelum menjalankan perintahnya, mis. `SIUJI_APP_PORT=8081 SIUJI_INSTALL_DIR=/opt/siuji-smp-mawar curl -fsSL ... | sudo bash`.
 
 **3. Arahkan 2 domain** ke IP VPS yang sama (ulangi langkah "Arahkan domain ke IP server" di atas untuk masing-masing, mis. `sd-melati.sch.id` dan `smp-mawar.sch.id`).
 
-**4. Satu Caddyfile untuk semua sekolah** — edit `/etc/caddy/Caddyfile` (Caddy yang sama, tidak perlu install ulang), tambahkan 1 blok per sekolah:
+**4. Satu Caddyfile untuk semua sekolah** — edit `/etc/caddy/Caddyfile` (Caddy yang sama, tidak perlu install ulang), tambahkan 1 blok per sekolah, port menyesuaikan yang tercatat di langkah 1–2:
 ```
 sd-melati.sch.id {
     reverse_proxy localhost:8080
@@ -262,7 +263,7 @@ smp-mawar.sch.id {
 ```
 Lalu `sudo systemctl restart caddy` sekali lagi. Caddy otomatis mengurus sertifikat HTTPS terpisah untuk kedua domain itu.
 
-Kalau nanti mau tambah sekolah lagi, tinggal ulangi langkah 1–2–3 (folder+port baru, domain baru) lalu tambahkan 1 blok baru lagi di Caddyfile yang sama.
+Kalau nanti mau tambah sekolah lagi, tinggal ulangi langkah 1–2–3 (folder baru, domain baru, catat port yang kepilih) lalu tambahkan 1 blok baru lagi di Caddyfile yang sama.
 
 ---
 

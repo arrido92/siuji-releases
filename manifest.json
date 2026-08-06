@@ -1,6 +1,6 @@
 {
-  "version": "1.2.9",
-  "release_notes": "Perbaikan kompatibilitas: sebagian antivirus (termasuk Windows Defender/SmartScreen) sempat salah mendeteksi installer versi sebelumnya sebagai ancaman (false positive) saat diunduh. Proses build sudah diperbaiki di versi ini sehingga tidak lagi memicu deteksi tersebut.",
+  "version": "1.3.0",
+  "release_notes": "Tiga channel distribusi (Windows/Linux/Docker) sekarang berbagi satu nomor versi. Fitur baru: check-in lisensi periodik ke server Nifadigital sebagai lapisan tambahan di atas verifikasi lisensi offline yang sudah ada -- opsional, tidak aktif kalau tidak dikonfigurasi.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

@@ -26,6 +26,11 @@ services:
     # mengunci versi, bukan otomatis ikut versi terbaru.
     image: ghcr.io/arrido92/siuji:latest
     restart: unless-stopped
+    # Label dibaca watchtower (WATCHTOWER_LABEL_ENABLE=true di bawah) --
+    # HANYA container berlabel ini yang boleh disentuh watchtower, "db"
+    # SENGAJA tidak dilabeli supaya Postgres TIDAK PERNAH ikut auto-pull.
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
     depends_on:
       db:
         condition: service_healthy
@@ -44,6 +49,10 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@siuji.local}
       ADMIN_PASSWORD: "${ADMIN_PASSWORD:?isi ADMIN_PASSWORD di .env dengan password kuat}"
       LICENSE_CHECKIN_URL: ${LICENSE_CHECKIN_URL:-}
+      # Dipakai tombol "Update Sekarang" di panel admin (lihat
+      # cmd/api/update_docker.go) untuk memanggil HTTP API watchtower di
+      # bawah -- token yang SAMA harus cocok dengan punya watchtower.
+      WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_HTTP_API_TOKEN:?isi WATCHTOWER_HTTP_API_TOKEN di .env -- generate lewat 'openssl rand -hex 32'}"
     volumes:
       - siuji_data:/data
     healthcheck:
@@ -51,6 +60,37 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # watchtower: SATU-SATUNYA container yang pegang akses Docker socket VPS
+  # (lihat volumes di bawah) -- container "app" SENGAJA TIDAK PERNAH diberi
+  # akses ini sendiri (kalau app punya celah keamanan, dampaknya tidak
+  # sampai memberi penyerang kendali atas seluruh VPS). app cuma "minta
+  # tolong" lewat HTTP API watchtower (jaringan internal compose, TIDAK
+  # dipublikasikan ke host/internet) saat admin klik "Update Sekarang" --
+  # lihat cmd/api/update_docker.go.
+  #
+  # Image "nickfedor/watchtower" (fork aktif, BUKAN "containrrr/watchtower"
+  # asli -- yang itu sudah 2+ tahun tidak dirawat & TERBUKTI rusak di Docker
+  # 29+, error "client version 1.25 is too old", dites nyata 2026-08-13).
+  # README fork ini sendiri bilang "tidak direkomendasikan produksi" --
+  # itu soal skenario auto-update background diam-diam (mode default kalau
+  # dikonfigurasi polling berkala), BUKAN cara kita pakai di sini.
+  #
+  # WATCHTOWER_HTTP_API_UPDATE=true mematikan polling otomatis berkala
+  # (perilaku default library ini) -- update HANYA terjadi saat diminta
+  # eksplisit lewat API, TIDAK PERNAH diam-diam di background tanpa admin
+  # klik tombol.
+  watchtower:
+    image: nickfedor/watchtower:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      WATCHTOWER_HTTP_API_UPDATE: 'true'
+      WATCHTOWER_HTTP_API_TOKEN: "${WATCHTOWER_HTTP_API_TOKEN:?isi WATCHTOWER_HTTP_API_TOKEN di .env -- generate lewat 'openssl rand -hex 32'}"
+      WATCHTOWER_LABEL_ENABLE: 'true'
+      WATCHTOWER_CLEANUP: 'true'
+      WATCHTOWER_NO_STARTUP_MESSAGE: 'true'
 
 volumes:
   siuji_pgdata:

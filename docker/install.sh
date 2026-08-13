@@ -108,6 +108,14 @@ fi
 #    pernah di-setup sebelumnya (mis. re-run skrip ini buat update Docker).
 if [ -f .env ]; then
   log ".env sudah ada, tidak ditimpa (dianggap instalasi lama)."
+  # Instalasi lama (dari sebelum fitur "Update Sekarang" untuk Docker ada)
+  # tidak punya baris ini -- tambahkan sekali di sini supaya docker-compose.yml
+  # terbaru (yang mewajibkan variabel ini, lihat service watchtower) tetap
+  # bisa jalan tanpa admin perlu edit .env manual.
+  if ! grep -q '^WATCHTOWER_HTTP_API_TOKEN=' .env; then
+    log "Menambahkan WATCHTOWER_HTTP_API_TOKEN ke .env (instalasi lama, fitur baru: update Docker 1-klik)..."
+    echo "WATCHTOWER_HTTP_API_TOKEN=$(openssl rand -hex 32)" >> .env
+  fi
 else
   log "Mencari port host yang masih kosong..."
   APP_PORT_CHOSEN="$(find_free_app_port)" || exit 1
@@ -125,6 +133,7 @@ ADMIN_EMAIL=admin@siuji.local
 ADMIN_PASSWORD=$RANDOM_ADMIN_PASSWORD
 APP_PORT=$APP_PORT_CHOSEN
 APP_ENV=production
+WATCHTOWER_HTTP_API_TOKEN=$(openssl rand -hex 32)
 EOF
   chmod 600 .env
 fi

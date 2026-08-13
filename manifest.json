@@ -1,6 +1,6 @@
 {
-  "version": "1.3.5",
-  "release_notes": "Tambah fitur Reset Data Aplikasi (admin bisa hapus data per kategori: ujian, bank soal, siswa, guru, data master, dengan konfirmasi ketik ulang frasa), log audit aksi admin, backup database otomatis terjadwal, dan optimasi performa untuk ujian serentak skala besar.",
+  "version": "1.3.6",
+  "release_notes": "Batas pool koneksi database sekarang otomatis menyesuaikan spesifikasi server (bukan angka tetap) -- lebih pas dipakai di VPS kecil maupun besar. Backup database otomatis kini bisa diatur admin (nyala/mati + jadwal jam-nya) dari halaman Backup Database. Perbarui logo aplikasi.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

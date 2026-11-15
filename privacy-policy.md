@@ -1,6 +1,6 @@
 # Kebijakan Privasi — Siuji
 
-*Terakhir diperbarui: 5 Agustus 2026*
+*Terakhir diperbarui: 15 November 2026*
 
 Kebijakan Privasi ini menjelaskan bagaimana data diproses saat Anda menggunakan aplikasi Siuji ("Aplikasi"), baik lewat aplikasi Android maupun versi web, yang dikembangkan oleh Nifadigital ("kami", "Pengembang").
 
@@ -47,28 +47,46 @@ Data di atas dipakai **semata-mata** untuk menjalankan fungsi inti Aplikasi:
 - Mencetak kartu ujian dan mengelola akses siswa oleh admin sekolah.
 - Menjaga integritas pelaksanaan ujian (mode aman/kiosk, deteksi pelanggaran, dan foto Pengawasan Webcam kalau diaktifkan Penyelenggara) — foto webcam TIDAK dipakai untuk tujuan lain di luar peninjauan integritas ujian oleh guru/pengawas.
 
-Kami (Nifadigital) **tidak menggunakan data ini untuk iklan, tidak menjualnya ke pihak ketiga, dan tidak membagikannya ke pihak luar** di luar server milik Penyelenggara tempat data itu tersimpan.
+Kami (Nifadigital) **tidak menggunakan data ini untuk iklan, tidak menjualnya ke pihak ketiga, dan tidak membagikannya ke pihak luar** di luar server milik Penyelenggara tempat data itu tersimpan. Satu-satunya data yang dikirim server Penyelenggara ke Nifadigital adalah statistik pemakaian server dan pemeriksaan lisensi yang dijelaskan di Bagian 4 — tidak memuat data siswa, guru, maupun nilai.
 
-## 4. Penyimpanan & Keamanan Data
+## 4. Statistik Pemakaian Server (dikirim ke Nifadigital)
+
+Mulai Siuji CBT versi 1.3.10, server Siuji milik Penyelenggara yang berjalan dalam mode Production mengirim **statistik pemakaian** ke Nifadigital saat server dinyalakan lalu sehari sekali. Tujuannya semata agar kami mengetahui berapa banyak instalasi Siuji yang dipakai dan versi mana yang masih berjalan — sehingga kami bisa memprioritaskan perbaikan dan dukungan.
+
+**Yang dikirim (anonim):**
+- ID instalasi acak (dibuat sekali saat Siuji dipasang, tidak terkait identitas siapa pun);
+- versi Siuji, sistem operasi, dan jalur instalasi (biasa/Docker);
+- jenis lisensi (Free/Pro/Premium);
+- **rentang** jumlah siswa aktif (misalnya "101-300"), bukan angka pasti.
+
+**Identitas sekolah — hanya bila disetujui admin:** nama sekolah/madrasah, NPSN/NSM, dan kabupaten/kota **hanya** ikut dikirim bila admin Penyelenggara sendiri menyetujuinya (bawaannya tidak dikirim). Persetujuan bisa dicabut kapan saja; laporan berikutnya otomatis menghapus identitas tersebut dari catatan kami.
+
+**Yang tidak pernah dikirim:** data siswa, guru, atau pengawas (nama, NISN, email, foto, kata sandi), jawaban dan nilai ujian, isi soal, maupun foto Pengawasan Webcam. Alamat IP server tidak disimpan — hanya kode negara.
+
+**Pemeriksaan lisensi berbayar:** server yang memasang lisensi Pro/Premium juga memeriksa keabsahan lisensinya ke Nifadigital saat dinyalakan lalu sehari sekali, dengan mengirim file lisensi yang diterbitkan Nifadigital, ID instalasi yang sama, dan versi Siuji. Pemeriksaan ini hanya untuk memastikan lisensi masih berlaku; server versi Free tidak melakukannya.
+
+Admin Penyelenggara dapat melihat isi **persis** data yang dikirim serta **mematikan** pengiriman ini sepenuhnya di menu **Pengaturan → Tentang Aplikasi → Statistik Penggunaan**. Statistik disimpan di layanan Cloudflare milik Nifadigital dan hanya dapat diakses oleh Nifadigital.
+
+## 5. Penyimpanan & Keamanan Data
 
 - Data tersimpan di server milik Penyelenggara (bisa berupa server sekolah sendiri, VPS, atau layanan hosting yang dipilih Penyelenggara). Khusus foto Pengawasan Webcam, Penyelenggara bisa memilih disimpan di penyimpanan awan terpisah (S3/Cloudflare R2), **atau** langsung di server/disk Siuji milik Penyelenggara sendiri (mode penyimpanan lokal) — kedua opsi ini tetap sepenuhnya milik & dikendalikan Penyelenggara, bukan server Nifadigital.
 - Komunikasi antara Aplikasi dan server dilindungi enkripsi (HTTPS wajib untuk server publik).
 - Sesi login perangkat mobile diikat ke perangkat tertentu (device binding) dengan tanda tangan kriptografis per-permintaan, untuk mencegah penyalahgunaan sesi oleh perangkat lain.
 - Kata sandi tidak pernah disimpan dalam bentuk teks biasa untuk keperluan autentikasi (memakai hash satu-arah).
 
-## 5. Anak di Bawah Umur
+## 6. Anak di Bawah Umur
 
 Siuji dipakai di lingkungan sekolah/madrasah, sehingga sebagian pengguna (siswa) mungkin berusia di bawah 13 tahun. Pendaftaran akun siswa **dilakukan oleh sekolah/madrasah (Penyelenggara)**, bukan oleh siswa/orang tua secara mandiri langsung ke Nifadigital — persetujuan penggunaan data siswa merupakan tanggung jawab hubungan sekolah dengan siswa/orang tua/wali, sesuai kebijakan masing-masing Penyelenggara.
 
-## 6. Hak Anda
+## 7. Hak Anda
 
 Untuk permintaan terkait data pribadi Anda (akses, koreksi, atau penghapusan), silakan hubungi **admin/operator sekolah tempat Anda terdaftar**, karena merekalah pengendali data yang menyimpan data tersebut secara langsung.
 
-## 7. Perubahan Kebijakan
+## 8. Perubahan Kebijakan
 
 Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Perubahan akan tercermin pada tanggal "Terakhir diperbarui" di atas.
 
-## 8. Kontak
+## 9. Kontak
 
 Pertanyaan umum seputar aplikasi Siuji (bukan permintaan data pribadi spesifik, yang harus lewat sekolah Anda) dapat disampaikan ke:
 

@@ -1,6 +1,6 @@
 {
-  "version": "1.3.10",
-  "release_notes": "Jadwal Ujian anti-bentrok: saat membuat jadwal, urutan isian sekarang Ujian, Sesi, Tanggal, baru Ruang -- ruang yang sudah dipakai jadwal lain pada tanggal & sesi yang sama tetap tampil tetapi tidak bisa dipilih, lengkap dengan keterangan dipakai ujian apa (berlaku juga di Tambah Ruang dan Ubah Tanggal/Sesi). Pengawas: satu guru hanya bisa mengawas satu ruang dalam satu waktu, lintas semua jadwal -- guru yang sudah bertugas di jadwal lain pada tanggal & sesi yang sama dikunci di tab Pengawas (di sesi lain tetap boleh), data lama yang terlanjur dobel ditandai \"Bentrok\", dan Ubah Tanggal/Sesi menampilkan peringatan bila ruang atau pengawasnya bentrok di slot tujuan. Baru: Statistik Penggunaan -- server mode Production mengirim statistik pemakaian anonim (versi, sistem operasi, jenis lisensi, rentang jumlah siswa) ke Nifadigital sehari sekali; identitas sekolah hanya ikut bila admin menyetujui, data siswa/guru/nilai tidak pernah dikirim. Bisa dilihat isinya dan dimatikan di Pengaturan > Tentang Aplikasi. Pemeriksaan lisensi Pro/Premium ke Nifadigital kini aktif otomatis di mode Production.",
+  "version": "1.3.11",
+  "release_notes": "Perbaikan login siswa: pesan saat NISN atau password salah kini berbunyi \"NISN atau password salah\" (sebelumnya menyebut email). Ganti password dengan password lama yang salah kini cukup menampilkan pesan \"password lama salah\" -- sebelumnya aplikasi Android (dan web) bisa menganggapnya sesi habis lalu mengeluarkan pengguna dari akun.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

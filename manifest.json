@@ -1,6 +1,6 @@
 {
-  "version": "1.3.13",
-  "release_notes": "Keamanan ujian Android (mode kiosk): bila HP mati, dimulai ulang, atau aplikasi ditutup paksa di tengah ujian, kejadian ini kini tercatat sebagai pelanggaran \"Aplikasi Dibuka Ulang\" (dihitung 1, ikut batas kirim otomatis). Pada mode ketat dengan kode pengawas, layar soal terkunci sampai pengawas memasukkan kode, dan monitoring guru menampilkan tanda \"Menunggu Kode Pengawas\". Kunci penuh membutuhkan aplikasi Siuji CBT Android 1.1.2; aplikasi lama tetap berjalan, dan pelanggarannya tetap tercatat.",
+  "version": "1.3.14",
+  "release_notes": "Perbaikan hasil uji lapangan: (1) Menu Ujian kini menampilkan SEMUA ujian (sebelumnya hanya 20 terbaru), juga daftar ujian siswa. (2) Monitoring Ujian per ruang: detail ruang hanya menampilkan siswa ruang itu, plus kotak cari nama siswa untuk reset. (3) Kode Pengawas: cakupan bisa diatur di Ujian Aman (semua guru dan admin / pengawas ujian lintas ruang / pengawas ruang saja); bawaannya semua guru dan admin, admin selalu bisa membuka kunci. Nama entri di aplikasi authenticator kini memuat nama sekolah agar tidak tertukar; atur ulang Kode Pengawas sekali bila sebelumnya pernah mendaftar di server lain dengan email yang sama.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }

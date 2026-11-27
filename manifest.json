@@ -1,6 +1,6 @@
 {
-  "version": "1.3.15",
-  "release_notes": "Kenyamanan pemakaian: (1) Jadwal Ujian dibagi dua tab, \"Akan Datang & Berlangsung\" dan \"Sudah Terlaksana\", dengan tanda \"Sedang berlangsung\"; jadwal pindah tab otomatis saat jendela waktunya habis. (2) Menu Ujian kini bisa ditampilkan per mapel: tiap mapel berisi ujian per tingkat kelas, dengan ringkasan jumlah published dan draft; tampilan daftar lama tetap tersedia. (3) Reset Login Peserta: kolom \"Sedang ujian\", saringan status, dan centang beberapa siswa lalu \"Reset Sesi Terpilih\" (khusus admin) dengan peringatan bila ada siswa yang sedang mengerjakan ujian.",
+  "version": "1.3.16",
+  "release_notes": "Keamanan data & laporan: (1) Data Master (Mapel, Tingkat, Rombel, Ruang, Sesi, Tahun Ajaran) tidak bisa dihapus selama masih dipakai bank soal, ujian, jadwal, atau riwayat siswa; soal ujian yang sudah dijawab siswa juga tidak bisa dihapus. (2) Ketuk ganda tombol Mulai tidak lagi membuat dua sesi ujian. (3) Laporan Nilai: tab Rekap per Rombel (rata-rata, median, persen tuntas KKM, sebaran nilai, ekspor Excel). (4) Leger Nilai per rombel per periode (khusus admin, ekspor Excel). (5) Guru Koreksi: admin/pembuat ujian bisa menugasi guru lain menilai esai lewat menu Koreksi Esai. (6) Bank soal bisa dibagikan ke guru lain (lihat & salin saja). (7) Pengingat di Dashboard admin bila Tahun Ajaran aktif sudah lewat.",
   "linux_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/linux/siuji",
   "windows_url": "https://raw.githubusercontent.com/arrido92/siuji-releases/main/windows/siuji.exe"
 }
